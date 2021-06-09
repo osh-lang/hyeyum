@@ -1,0 +1,36 @@
+package com.hyeyum.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.hyeyum.domain.ProfessorVO;
+
+/**
+ * 학생(ProfessorVO) 클래스와 관련된 테이블의 데이터를 조작하는 매퍼 인터페이스
+ * @author 오승현
+ * @since 2021 / 05 / 17
+ *
+ */
+public interface ProfessorMapper {
+	
+	public int insert(ProfessorVO professorVO);
+	
+	public int update(ProfessorVO professorVO);
+	
+	//초기 계정 생성
+	int generateAccount(@Param("profno") String profno, @Param("password") String password);
+	
+	public List<ProfessorVO> getList();
+	
+	public ProfessorVO read(String profno);
+	
+	public int delete(Long profno);
+	
+	int updatePassword(@Param("profno") String profno, @Param("password") String password);
+	
+	
+	
+	
+	
+}

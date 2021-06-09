@@ -1,0 +1,13 @@
+package com.hyeyum.domain;
+
+import lombok.Data;
+
+@Data
+public class StudentCategory {
+	private Integer grade;
+	private String gender;
+	private Boolean feature;
+	private Boolean status;
+	private Long deptno;
+	private Long profno;
+}

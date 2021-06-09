@@ -1,0 +1,16 @@
+package com.hyeyum.service;
+
+import java.util.List;
+
+import com.hyeyum.domain.StudStatusVO;
+
+public interface StudentStatusService {
+	
+	StudStatusVO get(Long statusno);
+	
+	List<StudStatusVO> getList(Long studno);
+	
+	int insert(StudStatusVO studStatusVO);
+	
+	int delete(StudStatusVO studStatusVO);
+}

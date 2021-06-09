@@ -1,0 +1,26 @@
+package com.hyeyum.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+
+import com.hyeyum.domain.CorrectionCategory;
+import com.hyeyum.domain.CorrectionVO;
+
+/**
+ * 성적이의신청내역 테이블의 데이터를 조작하는 매퍼 인터페이스
+ * @author 전민우
+ * @since 21/05/22
+ */
+public interface CorrectionMapper {
+	CorrectionVO get(Long corrno);
+	
+	List<CorrectionVO> getList(CorrectionCategory category);
+	
+	int insert(CorrectionVO correctionVO);
+	
+	int update(CorrectionVO correctionVO);
+	
+	@Delete("DELETE FROM TBL_CORRECTION WHERE CORRNO = #{corrno}")
+	int delete(CorrectionVO correctionVO);
+}

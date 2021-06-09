@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+
+.course-list-wrapper .card-title,
+.sugang-wrapper .card-title {
+	color: #777;
+	font-weight: normal;
+}
+
+.table-container {
+	overflow: scroll;
+}
+
+.course-list-wrapper .table-container {
+	height: 60vh;
+}
+
+.sugang-wrapper .table-container {
+	height: 50vh;
+}
+
+.table-container tr,
+.table-container th,
+.table-container td {
+	padding: 5px;
+	vertical-align: middle;
+}
+
+.table-container .btn {
+	padding: 3px;
+	font-size: .8em;
+}
+
+.sugang-wrapper .course-name {
+	cursor: pointer;
+}
+
+.sugang-wrapper .alert {
+	display: none;
+	position: fixed;
+	right: 5px;
+	bottom: 5px;
+}
+
+#timeTable table {
+	table-layout: fixed;
+	white-space: wrap;	
+}

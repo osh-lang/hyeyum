@@ -1,0 +1,19 @@
+package com.hyeyum.service;
+
+import java.util.List;
+
+import com.hyeyum.domain.StatusCategory;
+import com.hyeyum.domain.StudStatusVO;
+
+public interface AdminStatusService { //학적변동관리
+	
+	//학적변동 신청 목록조회
+	List<StudStatusVO> getStatusList(StatusCategory category);
+	
+	//학적변동 신청 상세내역 조회
+	StudStatusVO getStatus(Long statusno);
+	
+	//학적변동 승인 처리
+	int updateStatus(StudStatusVO studStatusVO);
+
+}

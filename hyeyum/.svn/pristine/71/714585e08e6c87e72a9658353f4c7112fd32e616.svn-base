@@ -1,0 +1,49 @@
+package com.hyeyum.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.hyeyum.domain.CourseCategory;
+import com.hyeyum.domain.CourseVO;
+import com.hyeyum.mapper.CourseMapper;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+/**
+ * ProfessorCourseService를 구현한 클래스
+ * @author 오승현
+ * @since 21 / 05 / 20
+ */
+
+@Service
+@Log4j
+@AllArgsConstructor
+public class ProferssorCourseServiceImpl implements ProferssorCourseService{
+
+	private CourseMapper courseMapper;
+	
+	@Override
+	public CourseVO getCouInfo(CourseCategory category) {
+		// TODO Auto-generated method stub
+		log.info("getCourInfo.....");
+		return courseMapper.read(category);
+	}
+
+	@Override
+	public List<CourseVO> getList(CourseCategory category) {
+		// TODO Auto-generated method stub
+		log.info("getProfCourseList....");
+		return courseMapper.getList(category);
+	}
+
+	@Override
+	public int addCourse(CourseVO courseVO) {
+		// TODO Auto-generated method stub
+		log.info("addCourse.......");
+		return courseMapper.insert(courseVO);
+		
+	}
+
+}

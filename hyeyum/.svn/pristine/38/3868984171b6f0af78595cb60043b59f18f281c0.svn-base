@@ -1,0 +1,183 @@
+package com.hyeyum.controller;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.hyeyum.domain.CourseCategory;
+import com.hyeyum.domain.CourseVO;
+import com.hyeyum.domain.ProfessorVO;
+import com.hyeyum.domain.StudentCategory;
+import com.hyeyum.domain.StudentVO;
+import com.hyeyum.service.AdminCourseService;
+import com.hyeyum.service.AdminEstablishService;
+import com.hyeyum.service.AdminHRService;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+@Controller
+@RequestMapping("/admin/*")
+@AllArgsConstructor
+public class AdminController {
+	
+	private AdminHRService adminHRService;
+	private AdminEstablishService adminEstablishService;
+	
+	
+	@GetMapping("index")
+	public void index(Locale locale, Model model) {
+		log.info("admin main....");
+		
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate);
+	}
+	@GetMapping("professorlist")
+	public void professorlist(Model model) {
+		log.info("professorlist....");
+		model.addAttribute("list", adminHRService.getProfessorList());
+	}
+	
+	@GetMapping({"getprofessor"})
+	public void getProfessor(String profno, Model model) {
+		log.info("getprofessor....");
+		model.addAttribute("professor", adminHRService.getProfessor(profno));
+	}
+	
+	@GetMapping("registerprofessor")
+	public void registerprofessor() {
+		log.info("registerprofessor....");
+	}
+	
+	@PostMapping("registerprofessor")
+	public String registerprofessor(ProfessorVO professorVO, RedirectAttributes rttr) {
+		log.info("registerprofessor....");
+		log.info(professorVO);
+		adminHRService.addProfessor(professorVO);
+		rttr.addFlashAttribute("result", professorVO.getProfno());
+		return null;
+	}
+	
+	@GetMapping("studentlist")
+	public void studentlist(StudentCategory studentCategory, Model model) {
+		log.info("studentlist....");
+		model.addAttribute("list", adminHRService.getStudentList(studentCategory));
+	}
+	
+	@GetMapping("getstudent")
+	public void getStudent(Long studno, Model model) {
+		log.info("get student....");
+		model.addAttribute("student", adminHRService.getStudent(studno));
+	}
+	
+	@PostMapping("deletestudent")
+	public String deleteStudent(Long studno, RedirectAttributes rttr) {
+		log.info("delete Student....");
+		adminHRService.deleteStudent(studno);
+		rttr.addFlashAttribute("result", "success");
+		
+		return "redirect:/admin/studentlist";
+	}
+	
+	@PostMapping("deleteprofessor")
+	public String deleteprofessor(Long profno, RedirectAttributes rttr) {
+		log.info("delete professor....");
+		adminHRService.deleteProfessor(profno);
+		rttr.addFlashAttribute("result", "success");
+		
+		return "redirect:/admin/professorlist";
+	}
+	
+	@PostMapping("getstudent")
+	public String updateStudent(StudentVO studentVO, RedirectAttributes rttr) {
+		log.info("update Student....");
+		adminHRService.updateStudent(studentVO);
+		rttr.addFlashAttribute("result", "success");
+		return "redirect:/admin/getstudent?studno="+studentVO.getStudno();
+	}
+	
+	@PostMapping("getprofessor")
+	public String updateProfessor(ProfessorVO professorVO, RedirectAttributes rttr) {
+		log.info("update Professor....");
+		adminHRService.updateProfessor(professorVO);
+		rttr.addFlashAttribute("result", "success");
+		return "redirect:/admin/getprofessor?profno="+professorVO.getProfno();
+	}
+	
+	@GetMapping("registerstudent")
+	public void registerstudent() {
+		log.info("registerstudent....");
+	}
+	
+	@PostMapping("registerstudent")
+	public String registerstudent(StudentVO studentVO, RedirectAttributes rttr){
+		log.info("Controller student register....");
+		log.info(studentVO);
+		adminHRService.addStudent(studentVO);
+		
+		rttr.addFlashAttribute("result", studentVO.getStudno());
+		return null;
+	}
+	
+	@GetMapping("managementopencourse")
+	public void managementopencourse(Model model) {
+		log.info("managementopencourse....");
+		CourseCategory category = new CourseCategory();
+		category.setEnable(false);
+		model.addAttribute("list", adminEstablishService.getList(category));
+		
+	}
+	
+	@PostMapping("managementopencourse")
+	public String enableUpdate(CourseVO courseVO, RedirectAttributes rttr) {
+		log.info("enableUpdate....");
+		adminEstablishService.approveCourse(courseVO);
+		rttr.addFlashAttribute("result", "success");
+		return "redirect:/admin/managementopencourse";
+	}
+	@GetMapping("managementcourse")
+	public void managementcourse() {
+		log.info("managementcourse....");
+	}
+	@GetMapping("managementstatus")
+	public void managementstatus() {
+		log.info("managementstatus....");
+	}
+	@GetMapping("curriculum")
+	public void curriculum() {
+		log.info("curriculum....");
+	}
+	@GetMapping("tuitionlist")
+	public void tuitionlist() {
+		log.info("tuitionlist....");
+	}
+	@GetMapping("scholarship")
+	public void scholarship() {
+		log.info("scholarship....");
+	}
+	@GetMapping("scholarshiplist")
+	public void scholarshiplist() {
+		log.info("scholarshiplist....");
+	}
+	@GetMapping("salary")
+	public void salary() {
+		log.info("salary....");
+	}
+	@GetMapping("salarylist")
+	public void salarylist() {
+		log.info("salarylist....");
+	}
+	
+}

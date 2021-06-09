@@ -1,0 +1,188 @@
+package com.hyeyum.controller;
+
+
+import java.security.Principal;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hyeyum.domain.CourseCategory;
+import com.hyeyum.domain.CourseVO;
+import com.hyeyum.domain.SugangVO;
+import com.hyeyum.service.StudentCourseService;
+import com.hyeyum.service.StudentGradeService;
+import com.hyeyum.service.StudentInfoService;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+/**
+ * 학생 계정으로 로그인 시의 기능을 제어하는 컨트롤러
+ * @author 전민우
+ * @since 2021/05/18
+ */
+@Log4j
+@Controller
+@RequestMapping("student/*")
+@AllArgsConstructor
+public class StudentController {
+	private StudentCourseService courseService;
+	private StudentInfoService infoService;
+	private StudentGradeService gradeService;
+	
+	@GetMapping("index")
+	public void list(Locale locale, Model model) {
+		log.info("student main....");
+		
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate );
+	}
+	
+	@GetMapping("info")
+	public void info(Model model) {
+		log.info("info....");
+		Long studno = 19112005L;
+		model.addAttribute("studentlist", infoService.get(studno));
+	}
+	
+	@GetMapping("statuslist")
+	public void statuslist() {
+		log.info("statuslist....");
+	}
+	
+	@GetMapping("updatestatus")
+	public void updatestatus() {
+		log.info("updatestatus....");
+	}
+	
+	@GetMapping("courselist")
+	public void courselist(CourseCategory category, Model model) {
+		log.info("courselist....");
+		category.setEnable(true);
+		model.addAttribute("list", courseService.getCourseList(category));
+	}
+	
+	@GetMapping("sugang")
+	public void sugang(CourseCategory category, Principal principal, Model model) {
+		log.info("sugang....");
+		
+//		Long studno = Long.parseLong(principal.getName());
+		Long studno = 21111004L;
+		
+		List<CourseVO> sugangList = new ArrayList<>();
+		CourseCategory category2 = new CourseCategory();
+		
+		for(SugangVO vo : courseService.getSugangList(studno)) {
+			category2.setCoursno(vo.getCoursno());
+			if(!vo.getStatus()) sugangList.add(courseService.get(category2));
+		}		
+		
+		model.addAttribute("list", courseService.getCourseList(category));
+		model.addAttribute("sugangList", sugangList);
+		model.addAttribute("timeTable", courseService.getTimeTable(studno));
+	}
+	
+	@PostMapping("sugang/add")
+	@ResponseBody
+	public String addSugang(@RequestBody SugangVO sugangVO) {
+		log.info("addSugang...");
+		
+		if(courseService.addSugang(sugangVO) > 0) {
+			log.info("addSugang success...");
+			CourseCategory category = new CourseCategory();
+			category.setCoursno(sugangVO.getCoursno());
+			return "success";
+		}
+		
+		log.info("addSugang fail...");
+		return null;
+	}
+	
+	@PostMapping("sugang/complete")
+	public String completeSugang(Principal principal) {
+//		Long studno = Long.parseLong(principal.getName());
+		Long studno = 21111004L;
+		
+		courseService.completeSugang(studno);
+		
+		return "redirect:../sugang";
+	}
+	
+	@PostMapping("sugang/delete")
+	@ResponseBody
+	public String deleteSugang(@RequestBody SugangVO sugangVO) {
+		log.info("deleteSugang...");
+		return courseService.deleteSugang(sugangVO) > 0 ? "success" : null;
+	}
+	
+	@GetMapping("suganglist")
+	public void studcourselist() {
+		log.info("suganglist....");
+	}
+	
+	@GetMapping("timetable")
+	@ResponseBody
+	public CourseVO[][] timetable(Principal principal) {
+		log.info("timetable....");
+		
+		Long studno = Long.parseLong(principal.getName()); 
+		
+		return courseService.getTimeTable(studno);
+	}
+	
+	@GetMapping("creditlist")
+	public void creditlist(Model model) {
+		log.info("creditlist....");
+		Long studno = 21111004L;
+		model.addAttribute("list",gradeService.getList(studno));
+		model.addAttribute("credit",gradeService.getCredit(studno));
+	}
+	
+	@GetMapping("gradelist")
+	public void gradelist(Model model) {
+		log.info("gradelist....");
+		Long studno = 21111004L;
+		model.addAttribute("list",gradeService.getList(studno));
+		model.addAttribute("credit",gradeService.getCredit(studno));
+	}
+	
+	@GetMapping("correction")
+	public void correction() {
+		log.info("correction....");
+	}
+	
+	@GetMapping("correctionlist")
+	public void correctionlist() {
+		log.info("correctionlist....");
+	}
+	
+	@GetMapping("tuition")
+	public void tuition() {
+		log.info("tuition....");
+	}
+	
+	@GetMapping("tuitionlist")
+	public void tuitionlist() {
+		log.info("tuitionlist....");
+	}
+	
+	@GetMapping("scholarshiplist")
+	public void scholarshiplist() {
+		log.info("scholarshiplist....");
+	}
+	
+}

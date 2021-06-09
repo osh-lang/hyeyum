@@ -1,0 +1,27 @@
+package com.hyeyum.service;
+
+import java.util.List;
+
+import com.hyeyum.domain.ProfessorVO;
+import com.hyeyum.domain.StudentCategory;
+import com.hyeyum.domain.StudentVO;
+
+public interface AdminHRService { //인적관리
+	
+	List<StudentVO> getStudentList(StudentCategory studentCategory);
+	StudentVO getStudent(Long studno);
+	int updateStudent(StudentVO studentVO);
+	
+	List<ProfessorVO> getProfessorList();
+	ProfessorVO getProfessor(String profno);
+	int updateProfessor(ProfessorVO professorVO);
+	
+	//계정부여
+	int addStudent(StudentVO studentVO);
+	int addProfessor(ProfessorVO professorVO);
+	
+	//계정삭제
+	int deleteStudent(Long studno);
+	int deleteProfessor(Long profno);
+
+}

@@ -1,0 +1,23 @@
+package com.hyeyum.domain;
+
+import java.util.Date;
+
+import lombok.Data;
+
+/**
+ *  상담 객체 생성
+ * @author 오승현
+ * @since 2021 / 05 / 19
+ *
+ */
+
+@Data
+public class CounselVO {
+	private Long counno;
+	private Date coundate;
+	private Date regdate;
+	private String content;
+	private String studno;
+	private String profno;
+
+}

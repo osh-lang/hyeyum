@@ -1,0 +1,24 @@
+package com.hyeyum.service;
+
+import java.util.List;
+
+import com.hyeyum.domain.CurriculumVO;
+
+
+/**
+ * 교욱과정 관리 서비스 인터페이스 
+ * @author 강영훈
+ * @since 2021-05-20
+ */
+public interface AdminCurriculumService {
+	
+	List<CurriculumVO> getList(); //교육과정 조회
+	
+	int addCurriculum(CurriculumVO curriculumVO); //교육과정 추가
+	
+	int updateCurriculum(CurriculumVO curriculumVO); //교육과정 수정
+	
+	int deleteCurriculum(String coursno); // 교육과정 삭제 
+	
+	
+}

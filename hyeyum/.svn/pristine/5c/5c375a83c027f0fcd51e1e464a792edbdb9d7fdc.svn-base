@@ -1,0 +1,41 @@
+package com.hyeyum.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hyeyum.domain.StatusCategory;
+import com.hyeyum.domain.StudStatusVO;
+import com.hyeyum.mapper.StudStatusMapper;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Service
+@Log4j
+@AllArgsConstructor
+public class AdminStatusServiceImpl implements AdminStatusService{
+
+	@Autowired
+	private StudStatusMapper studStatusMapper;
+
+	@Override
+	public List<StudStatusVO> getStatusList(StatusCategory category) {
+		log.info("getStatusList.....");
+		return studStatusMapper.getList(category);
+	}
+
+	@Override
+	public StudStatusVO getStatus(Long statusno) {
+		log.info("getStatus.....");
+		return studStatusMapper.read(statusno);
+	}
+
+	@Override
+	public int updateStatus(StudStatusVO studStatusVO) {
+		log.info("updateStatus.....");
+		return studStatusMapper.update(studStatusVO);
+	}
+
+};

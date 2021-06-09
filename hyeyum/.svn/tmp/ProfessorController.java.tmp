@@ -1,0 +1,140 @@
+package com.hyeyum.controller;
+
+import java.security.Principal;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.hyeyum.domain.CounselVO;
+import com.hyeyum.domain.CourseCategory;
+import com.hyeyum.domain.CourseVO;
+import com.hyeyum.domain.ProfessorVO;
+import com.hyeyum.domain.StudentCategory;
+import com.hyeyum.service.AdminHRService;
+import com.hyeyum.service.ProferssorCourseService;
+import com.hyeyum.service.ProferssorInfoService;
+import com.hyeyum.service.StudentCourseService;
+import com.hyeyum.service.StudentManagementService;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+@Controller
+@RequestMapping("/professor/*")
+@AllArgsConstructor
+public class ProfessorController {
+	
+	private ProferssorInfoService proferssorInfoService;
+	private AdminHRService adminHRService;
+	private ProferssorCourseService proferssorCourseService;
+	private StudentCourseService courseService;
+	private StudentManagementService studentManagementService;
+	
+	
+	@GetMapping("index")
+	public void list(Locale locale, Model model) {
+		log.info("professor main....");
+		
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate );
+	}
+	
+	
+	@PostMapping("info")
+	public String info(@ModelAttribute ProfessorVO professorVO, RedirectAttributes rttr) {
+		
+		log.info("infoupdate......." + professorVO.getProfno());
+		proferssorInfoService.updateProfInfo(professorVO);
+		rttr.addFlashAttribute("result", professorVO.getProfno());
+		return "redirect:/professor/info?profno="+professorVO.getProfno();
+		
+	}
+	@GetMapping("info")
+	public void info(String profno, Model model) {
+		log.info("info....");
+		model.addAttribute("professor", adminHRService.getProfessor(profno));
+		log.info(adminHRService.getProfessor(profno));
+	}
+	
+	@PostMapping("registercourse")
+	public String registercourse(CourseVO courseVO, RedirectAttributes rttr) {
+		log.info("registercourse.......");
+		log.info(courseVO);
+		proferssorCourseService.addCourse(courseVO);
+		rttr.addFlashAttribute("result", courseVO.getCoursno());
+		return null;
+		
+	}
+	
+	@GetMapping("registercourse")
+	public void registercourse() {
+		log.info("registercourse....");
+	}
+	
+	@GetMapping("courselist")
+	public void courselist(CourseCategory category, Model model) {
+		log.info("courselist....");
+<<<<<<< .mine
+		category.setEnable(true);
+		
+		
+||||||| .r84
+=======
+>>>>>>> .r89
+		model.addAttribute("list", courseService.getCourseList(category));
+	}
+	@GetMapping("studentlist")
+	public void studentlist(StudentCategory studentCategory, Model model) {
+		log.info("studentlist....");
+		model.addAttribute("list", adminHRService.getStudentList(studentCategory));
+	}
+	
+	@GetMapping("counsel")
+	public void counsel() {
+		log.info("counsel....");
+	}
+	
+	@PostMapping("counsel")
+	public String counsel(CounselVO counselVO, RedirectAttributes rttr) {
+		log.info("counsellist.......");
+		studentManagementService.getwriCounsel(counselVO);
+		rttr.addAttribute("result", "success");
+		return "redirect:/professor/counsellist?studno="+counselVO.getStudno();
+	}
+	
+	@GetMapping("counsellist")
+	public void counsellist(Long studno, Model model) {
+		log.info("counsellist....");
+		model.addAttribute("list", studentManagementService.getCounselList(studno));
+	}
+	@GetMapping("registergrade")
+	public void registergrade() {
+		log.info("registergrade....");
+	}
+	@GetMapping("correctionlist")
+	public void correctionlist() {
+		log.info("correctionlist....");
+	}
+	@GetMapping("managementcorrection")
+	public void managementcorrection() {
+		log.info("managementcorrection....");
+	}
+	@GetMapping("salarylist")
+	public void salarylist() {
+		log.info("salarylist....");
+	}
+}

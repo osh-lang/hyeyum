@@ -1,0 +1,11 @@
+package com.hyeyum.domain;
+
+import lombok.Data;
+
+@Data
+public class CorrectionCategory {
+	private Long studno;
+	private Long coursno;
+	private Long deptno;
+	private Boolean status;
+}

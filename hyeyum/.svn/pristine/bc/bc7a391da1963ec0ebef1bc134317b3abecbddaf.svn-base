@@ -1,0 +1,26 @@
+package com.hyeyum.service;
+
+import java.util.List;
+
+import com.hyeyum.domain.CorrectionCategory;
+import com.hyeyum.domain.CorrectionVO;
+import com.hyeyum.domain.CourseVO;
+import com.hyeyum.domain.Credit;
+import com.hyeyum.domain.CurriculumVO;
+import com.hyeyum.domain.SugangVO;
+
+public interface StudentGradeService {
+	
+	Credit getCredit(Long studno);
+		
+	List<CorrectionVO> getCorrectionList(CorrectionCategory category);
+	
+	CorrectionVO getCorrection(Long corrno);
+	
+	int requestCorrection(CorrectionVO correctionVO);
+	
+	int cancleCorrection(CorrectionVO correctionVO);
+	
+	List<SugangVO> getList(Long studno);
+	
+}
